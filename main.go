@@ -1,8 +1,6 @@
 package main
 
-// import "fmt"
 import (
-
 	"github.com/LokoGod/expense_tracker/initializers"
 	"github.com/gin-gonic/gin"
 )
@@ -21,5 +19,5 @@ func main() {
 			"message": "pong",
 		})
 	})
-	router.Run() // Listen and serve on 0.0.0.0:8080
+	router.Run()
 }
