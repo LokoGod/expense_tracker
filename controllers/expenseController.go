@@ -91,7 +91,6 @@ func UpdateSpecificExpenseRecord(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"Updated Record": specificExpenseRecord,
 	})
-
 }
 
 // DeleteSpecificExpenseRecord This deleteFunc kinda does a soft-delete & does not show in fetch req
