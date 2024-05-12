@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/LokoGod/expense_tracker/controllers"
 	"github.com/LokoGod/expense_tracker/initializers"
 	"github.com/gin-gonic/gin"
 )
@@ -14,10 +15,8 @@ func main() {
 
 	router := gin.Default()
 
-	router.GET("/api/v1/ping", func(ctx *gin.Context) {
-		ctx.JSON(200, gin.H{
-			"message": "pong",
-		})
-	})
+	router.GET("/api/v1/expense", controllers.FetchAllExpenseRecords)
+	router.POST("/api/v1/expense", controllers.AddExpenseRecord)
+	
 	router.Run()
 }
