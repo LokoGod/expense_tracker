@@ -94,6 +94,14 @@ func UpdateSpecificExpenseRecord(c *gin.Context) {
 
 }
 
+// DeleteSpecificExpenseRecord This deleteFunc kinda does a soft-delete & does not show in fetch req
 func DeleteSpecificExpenseRecord(c *gin.Context) {
+	//	Get ID from Endpoint
+	id := c.Param("id")
 
+	//	Delete record
+	initializers.DB.Delete(&models.Expense{}, id)
+
+	//	Respond data
+	c.Status(200)
 }
