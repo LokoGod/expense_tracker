@@ -18,6 +18,8 @@ func main() {
 
 	router.GET("/api/v1/expense", controllers.FetchAllExpenseRecords)
 	router.POST("/api/v1/expense", controllers.AddExpenseRecord)
+	router.GET("/api/v1/expense/:id", controllers.FetchSpecificExpenseRecord)
+	router.PUT("/api/v1/expense/:id", controllers.UpdateSpecificExpenseRecord)
 
 	if err := router.Run(); err != nil {
 		log.Fatalf("Error starting server: %v", err)
