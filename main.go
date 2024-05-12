@@ -4,6 +4,7 @@ import (
 	"github.com/LokoGod/expense_tracker/controllers"
 	"github.com/LokoGod/expense_tracker/initializers"
 	"github.com/gin-gonic/gin"
+	"log"
 )
 
 func init() {
@@ -17,6 +18,8 @@ func main() {
 
 	router.GET("/api/v1/expense", controllers.FetchAllExpenseRecords)
 	router.POST("/api/v1/expense", controllers.AddExpenseRecord)
-	
-	router.Run()
+
+	if err := router.Run(); err != nil {
+		log.Fatalf("Error starting server: %v", err)
+	}
 }

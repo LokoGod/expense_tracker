@@ -4,6 +4,7 @@ import (
 	"github.com/LokoGod/expense_tracker/initializers"
 	"github.com/LokoGod/expense_tracker/models"
 	"github.com/gin-gonic/gin"
+	"log"
 )
 
 func AddExpenseRecord(c *gin.Context) {
@@ -15,7 +16,9 @@ func AddExpenseRecord(c *gin.Context) {
 		Recurring    bool
 	}
 
-	c.Bind(&body)
+	if err := c.Bind(&body); err != nil {
+		log.Fatalf("Error binding data: %v", err)
+	}
 
 	// Add the expense
 	expenseRecord := models.Expense{ExpenseTitle: body.ExpenseTitle, Amount: body.Amount, Recurring: body.Recurring}
