@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/LokoGod/expense_tracker/controllers"
 	"github.com/LokoGod/expense_tracker/initializers"
+	"github.com/LokoGod/expense_tracker/middleware"
 	"github.com/gin-gonic/gin"
 	"log"
 )
@@ -15,7 +16,10 @@ func init() {
 func main() {
 
 	router := gin.Default()
+	// middleware
+	router.Use(middleware.CORSMiddleware())
 
+	// routing
 	router.GET("/api/v1/expense", controllers.FetchAllExpenseRecords)
 	router.POST("/api/v1/expense", controllers.AddExpenseRecord)
 	router.GET("/api/v1/expense/:id", controllers.FetchSpecificExpenseRecord)
