@@ -22,6 +22,9 @@ func main() {
 	router.PUT("/api/v1/expense/:id", controllers.UpdateSpecificExpenseRecord)
 	router.DELETE("/api/v1/expense/:id", controllers.DeleteSpecificExpenseRecord)
 
+	router.GET("/api/v1/expenseCategory", controllers.FetchAllExpenseCategories)
+	router.POST("/api/v1/expenseCategory", controllers.AddExpenseCategory)
+
 	if err := router.Run(); err != nil {
 		log.Fatalf("Error starting server: %v", err)
 	}
