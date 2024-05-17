@@ -22,9 +22,10 @@ func AddExpenseRecord(c *gin.Context) {
 
 	// Get data from req.body
 	var body struct {
-		ExpenseTitle string
-		Amount       int
-		Recurring    bool
+		ExpenseTitle    string
+		Amount          int
+		Recurring       bool
+		RelatedBudgetID uint
 	}
 
 	if err := c.Bind(&body); err != nil {
@@ -32,7 +33,11 @@ func AddExpenseRecord(c *gin.Context) {
 	}
 
 	// Add the expense
-	expenseRecord := models.Expense{ExpenseTitle: body.ExpenseTitle, Amount: body.Amount, Recurring: body.Recurring}
+	expenseRecord := models.Expense{
+		ExpenseTitle: body.ExpenseTitle,
+		Amount:       body.Amount,
+		Recurring:    body.Recurring,
+	}
 
 	result := initializers.DB.Create(&expenseRecord)
 
@@ -41,9 +46,22 @@ func AddExpenseRecord(c *gin.Context) {
 		return
 	}
 
+	// Create the related budget relationship
+	expenseRelatedBudget := models.ExpenseRelatedBudget{
+		RelatedBudgetID:  body.RelatedBudgetID,
+		RelatedExpenseID: expenseRecord.ID,
+	}
+
+	// Add the relationship to the database
+	if err := initializers.DB.Create(&expenseRelatedBudget).Error; err != nil {
+		c.Status(500)
+		return
+	}
+
 	// return the data
 	c.JSON(201, gin.H{
-		"Added": expenseRecord,
+		"Added":         expenseRecord,
+		"RelatedBudget": expenseRelatedBudget,
 	})
 }
 
@@ -61,6 +79,7 @@ func FetchSpecificExpenseRecord(c *gin.Context) {
 	})
 }
 
+// UpdateSpecificExpenseRecord Need to update this function
 func UpdateSpecificExpenseRecord(c *gin.Context) {
 	//	Get ID from Endpoint
 	id := c.Param("id")
