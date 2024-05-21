@@ -32,8 +32,7 @@ func CalTotalBudgetRelatedExpenseRecordAmount(c *gin.Context) {
 	}
 
 	c.JSON(200, gin.H{
-		"All related records": relatedExpenseRecords,
-		"Total amount":        totalExpenseRecordAmount,
+		"Total": totalExpenseRecordAmount,
 	})
 }
 

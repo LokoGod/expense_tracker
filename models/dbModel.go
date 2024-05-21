@@ -20,6 +20,7 @@ type Budget struct {
 	gorm.Model
 	BudgetTitle    string
 	BudgetAmount   int
+	BudgetDetail   string
 	RelatedExpense []ExpenseRelatedBudget `gorm:"foreignKey: RelatedExpenseID"`
 }
 
