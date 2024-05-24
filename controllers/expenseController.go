@@ -5,12 +5,13 @@ import (
 	"github.com/LokoGod/expense_tracker/models"
 	"github.com/gin-gonic/gin"
 	"log"
+	"net/http"
 )
 
 func FetchAllExpenseRecords(c *gin.Context) {
-	// Get expenseRecords
+	// Get expenseRecords with associated Budget loaded
 	var expenseRecords []models.Expense
-	initializers.DB.Find(&expenseRecords)
+	initializers.DB.Preload("Budget").Find(&expenseRecords)
 
 	// Respond with the data
 	c.JSON(200, gin.H{
@@ -19,50 +20,36 @@ func FetchAllExpenseRecords(c *gin.Context) {
 }
 
 func AddExpenseRecord(c *gin.Context) {
-
 	// Get data from req.body
 	var body struct {
-		ExpenseTitle    string
-		Amount          int
-		Recurring       bool
-		RelatedBudgetID uint
+		ExpenseTitle string
+		Amount       int
+		Recurring    bool
+		BudgetID     uint
 	}
 
 	if err := c.Bind(&body); err != nil {
-		log.Fatalf("Error binding data: %v", err)
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 
-	// Add the expense
+	// Create the expense record
 	expenseRecord := models.Expense{
 		ExpenseTitle: body.ExpenseTitle,
 		Amount:       body.Amount,
 		Recurring:    body.Recurring,
+		BudgetID:     body.BudgetID,
 	}
 
+	// Add the expense record to the database
 	result := initializers.DB.Create(&expenseRecord)
-
 	if result.Error != nil {
-		c.Status(500)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
 		return
 	}
 
-	// Create the related budget relationship
-	expenseRelatedBudget := models.ExpenseRelatedBudget{
-		RelatedBudgetID:  body.RelatedBudgetID,
-		RelatedExpenseID: expenseRecord.ID,
-	}
-
-	// Add the relationship to the database
-	if err := initializers.DB.Create(&expenseRelatedBudget).Error; err != nil {
-		c.Status(500)
-		return
-	}
-
-	// return the data
-	c.JSON(201, gin.H{
-		"Added":         expenseRecord,
-		"RelatedBudget": expenseRelatedBudget,
-	})
+	// Return the data
+	c.JSON(http.StatusCreated, gin.H{"added": expenseRecord})
 }
 
 func FetchSpecificExpenseRecord(c *gin.Context) {

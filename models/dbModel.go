@@ -4,16 +4,11 @@ import "gorm.io/gorm"
 
 type Expense struct {
 	gorm.Model
-	ExpenseTitle  string
-	Amount        int
-	Recurring     bool
-	RelatedBudget []ExpenseRelatedBudget `gorm:"foreignKey: RelatedBudgetID"`
-}
-
-type ExpenseRelatedBudget struct {
-	ID               uint `gorm:"primarykey"`
-	RelatedBudgetID  uint
-	RelatedExpenseID uint
+	ExpenseTitle string
+	Amount       int
+	Recurring    bool
+	BudgetID     uint
+	Budget       Budget `gorm:"foreignKey:BudgetID"`
 }
 
 type Budget struct {
@@ -21,14 +16,8 @@ type Budget struct {
 	BudgetTitle    string
 	BudgetAmount   int
 	BudgetDetail   string
-	RelatedExpense []ExpenseRelatedBudget `gorm:"foreignKey: RelatedExpenseID"`
+	ExpenseRecords []Expense
 }
-
-//type ExpenseCategories struct {
-//	ID                   uint `gorm:"primarykey"`
-//	ExpenseCategoryTitle string
-//	Expense              []Expense `gorm:"foreignKey: ExpenseCategoryID"`
-//}
 
 type Income struct {
 	gorm.Model
