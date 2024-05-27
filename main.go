@@ -30,7 +30,7 @@ func main() {
 	router.POST("/api/v1/budget", controllers.AddBudget)
 	router.DELETE("/api/v1/budget/:id", controllers.DeleteBudget)
 
-	//router.GET("/api/v1/relatedExpenseRecord/:RelatedBudgetID", controllers.FetchAllBudgetRelatedExpenseRecords)
+	router.GET("/api/v1/relatedExpenseRecord/:BudgetID", controllers.FetchAllBudgetRelatedExpenseRecords)
 	//router.GET("/api/v1/totalRelatedRecordAmount/:RelatedBudgetID", controllers.CalTotalBudgetRelatedExpenseRecordAmount)
 	//router.GET("/api/v1/calBudgetRemaining/:RelatedBudgetID", controllers.CalBudgetRemaining)
 
