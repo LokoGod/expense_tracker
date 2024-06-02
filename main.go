@@ -31,7 +31,7 @@ func main() {
 	router.DELETE("/api/v1/budget/:id", controllers.DeleteBudget)
 
 	router.GET("/api/v1/relatedExpenseRecord/:BudgetID", controllers.FetchAllBudgetRelatedExpenseRecords)
-	//router.GET("/api/v1/totalRelatedRecordAmount/:RelatedBudgetID", controllers.CalTotalBudgetRelatedExpenseRecordAmount)
+	router.GET("/api/v1/totalRelatedRecordAmount/:BudgetID", controllers.CalTotalBudgetRelatedExpenseRecordAmount)
 	//router.GET("/api/v1/calBudgetRemaining/:RelatedBudgetID", controllers.CalBudgetRemaining)
 
 	//router.GET("/api/v1/expenseCategory", controllers.FetchAllExpenseCategories)

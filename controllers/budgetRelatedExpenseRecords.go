@@ -18,24 +18,22 @@ func FetchAllBudgetRelatedExpenseRecords(c *gin.Context) {
 	})
 }
 
-//func CalTotalBudgetRelatedExpenseRecordAmount(c *gin.Context) {
-//	id := c.Param("RelatedBudgetID")
-//
-//	var relatedExpenseRecords []models.ExpenseRelatedBudget
-//	initializers.DB.Where("Related_Budget_ID = ?", id).Find(&relatedExpenseRecords)
-//
-//	var totalExpenseRecordAmount int
-//	for _, record := range relatedExpenseRecords {
-//		var expense models.Expense
-//		initializers.DB.First(&expense, record.RelatedExpenseID)
-//		totalExpenseRecordAmount += expense.Amount
-//	}
-//
-//	c.JSON(200, gin.H{
-//		"Total": totalExpenseRecordAmount,
-//	})
-//}
-//
+func CalTotalBudgetRelatedExpenseRecordAmount(c *gin.Context) {
+	id := c.Param("BudgetID")
+
+	var relatedExpenseRecords []models.Expense
+	initializers.DB.Where("Budget_ID = ?", id).Find(&relatedExpenseRecords)
+
+	var totalExpenseRecordAmount int
+	for _, record := range relatedExpenseRecords {
+		totalExpenseRecordAmount += record.Amount
+	}
+
+	c.JSON(200, gin.H{
+		"Total": totalExpenseRecordAmount,
+	})
+}
+
 //func CalBudgetRemaining(c *gin.Context) {
 //	id := c.Param("RelatedBudgetID")
 //
